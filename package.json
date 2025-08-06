@@ -1,0 +1,32 @@
+{
+  "name": "route-eyes",
+  "version": "1.0.0",
+  "description": "Express middleware to detect and optionally block suspicious or malicious route access attempts.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "express",
+    "middleware",
+    "security",
+    "routes",
+    "monitoring",
+    "firewall",
+    "block",
+    "php",
+    "scanner",
+    "malicious"
+  ],
+  "author": "asbkakao@gmail.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/route-eyes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/route-eyes/issues"
+  },
+  "homepage": "https://github.com/yourusername/route-eyes#readme"
+}
