@@ -1,6 +1,6 @@
 {
   "name": "route-eyes",
-  "version": "1.0.0",
+  "version": "1.0.11",
   "description": "Express middleware to detect and optionally block suspicious or malicious route access attempts.",
   "main": "index.js",
   "type": "commonjs",
@@ -21,12 +21,24 @@
   ],
   "author": "asbkakao@gmail.com",
   "license": "MIT",
+  "compilerOptions": {
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ]
+  },
+  "types": "types/route-eyes.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/route-eyes.git"
+    "url": "git+https://github.com/tango-down/route-eyes.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/route-eyes/issues"
+    "url": "https://github.com/tango-down/route-eyes/issues"
   },
-  "homepage": "https://github.com/yourusername/route-eyes#readme"
+  "homepage": "https://github.com/tango-down/route-eyes",
+  "dependencies": {
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
+  }
 }

@@ -1,6 +1,7 @@
-function routeEyes({ block = false, onDetect, log = true } = {}) {
+const fs = require("fs");
+const path = require("path");
 
-    const paths = [
+const paths = [
         "/admin.php",
         "/admin/admin.php",
         "/admin/function.php",
@@ -151,8 +152,40 @@ function routeEyes({ block = false, onDetect, log = true } = {}) {
         "/wp-l0gin.php"
     ];
 
+function routeEyes({ block = false, onDetect, log = true, banFile = "banned_ips.json" } = {}) {
+
+    const banFilePath = path.resolve(banFile);
+
+    // 벤 리스트 불러오기
+    let bannedIps = [];
+    if (fs.existsSync(banFilePath)) {
+        try {
+            bannedIps = JSON.parse(fs.readFileSync(banFilePath, "utf-8"));
+        } catch (err) {
+            console.error("[route-eyes] Failed to read ban file:", err);
+            bannedIps = [];
+        }
+    }
+
+    // IP 벤 저장 함수
+    function saveBanList() {
+        try {
+            fs.writeFileSync(banFilePath, JSON.stringify(bannedIps, null, 2));
+        } catch (err) {
+            console.error("[route-eyes] Failed to save ban file:", err);
+        }
+    }
 
     return function (req, res, next) {
+        // 1. 이미 벤된 IP인지 확인
+        if (bannedIps.includes(req.ip)) {
+            if (log) {
+                console.warn(`[route-eyes] Blocked banned IP: ${req.ip}`);
+            }
+            return res.status(403).send("Forbidden");
+        }
+
+        // 2. 경로 매칭 확인
         const matched = paths.some(p => {
             if (typeof p === "string") return req.path === p;
             if (p instanceof RegExp) return p.test(req.path);
@@ -166,6 +199,12 @@ function routeEyes({ block = false, onDetect, log = true } = {}) {
 
             if (typeof onDetect === "function") {
                 onDetect(req, res);
+            }
+
+            // 3. 벤 IP 목록에 추가
+            if (!bannedIps.includes(req.ip)) {
+                bannedIps.push(req.ip);
+                saveBanList();
             }
 
             if (block) {
